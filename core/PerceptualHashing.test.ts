@@ -1,4 +1,6 @@
-import { HexToBin } from './PerceptualHashing';
+import { HexToBin, GetImgFromFile } from './PerceptualHashing';
+import { Image } from '@canvas/image';
+import path from 'path';
 
 describe('Perceptual Hashing', () => {
   describe('Hex To Bin Function', () => {
@@ -16,6 +18,42 @@ describe('Perceptual Hashing', () => {
     });
     it('Should fail if the input is an invalid hex value', () => {
       expect(HexToBin('Merli Mejia')).toBeFalsy();
+    });
+  });
+
+  describe('Get Imgage From File', () => {
+    it('Should return a valid Image object from a file', (done) => {
+      GetImgFromFile(path.resolve('./utils/testimg.jpeg'))
+        .then((res) => {
+          expect(res).toBeInstanceOf(Image);
+          expect(res?.width).toBeGreaterThan(0);
+          done();
+        })
+        .catch((rej) => done(rej));
+    });
+    it('Should fail on with empty path', (done) => {
+      GetImgFromFile('')
+        .then((res) => {
+          expect(res).toBeUndefined();
+          done();
+        })
+        .catch((rej) => done(rej));
+    });
+    it("Should fail if file doesn't exist", (done) => {
+      GetImgFromFile(path.resolve('./utils/testimg-not.jpeg'))
+        .then((res) => {
+          expect(res).toBeUndefined();
+          done();
+        })
+        .catch((rej) => done(rej));
+    });
+    it('Should fail if file is not an image', (done) => {
+      GetImgFromFile(path.resolve('./utils/test.txt'))
+        .then((res) => {
+          expect(res).toBeUndefined();
+          done();
+        })
+        .catch((rej) => done(rej));
     });
   });
 });
