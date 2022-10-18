@@ -15,3 +15,26 @@ The idea was to create an open-source API public to the world that can provide t
 This will be an open-source project so it will be free forever, we are going to provide ways for people to donate to help keep the servers running and also to get better servers.
 
 This source code will be used to create a web and mobile app for finding island information in the game Sea of Thieves.
+
+## Doc
+
+Run eveything:
+```
+docker-compose up
+```
+Run DB:
+```
+docker-compose db
+```
+Run PGAdmin:
+```
+docker-compose pgadmin
+```
+Run API:
+```
+docker-compose api
+```
+Run tests:
+```
+docker-compose run --rm api npm run test
+```
