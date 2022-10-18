@@ -5,6 +5,19 @@ type Data = {
   name: string
 }
 
+/**
+ * @swagger
+ * /api/hello:
+ *  get:
+ *    description: Returns an object with the name John Doe
+ *    responses:
+ *      200:
+ *        description: Object with the name John Doe
+ *        content:
+ *          application/json:
+ *            example: { name: 'John Doe' }
+ *          
+ */
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
