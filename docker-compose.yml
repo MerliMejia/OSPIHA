@@ -1,6 +1,28 @@
-version: '1'
+version: '1.1'
 
 services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    hostname: postgres
+    ports:
+      - '6543:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+    container_name: ospiha-db
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - db
+    ports:
+      - "5555:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    restart: unless-stopped
   api:
     environment:
       - NODE_ENV=development
@@ -15,3 +37,6 @@ services:
     ports:
       - '3000:3000'
     command: npm run dev
+volumes:
+  db:
+    driver: local
