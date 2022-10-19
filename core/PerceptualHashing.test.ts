@@ -29,7 +29,7 @@ describe('Perceptual Hashing', () => {
 
   describe('Get Imgage From File', () => {
     it('Should return a valid Image object from a file', (done) => {
-      GetImgFromFile(path.resolve('./utils/testimg.jpeg'))
+      GetImgFromFile(path.resolve('./utils/testimg.jpg'))
         .then((res) => {
           expect(res).toBeInstanceOf(Image);
           expect(res?.width).toBeGreaterThan(0);
@@ -78,14 +78,25 @@ describe('Perceptual Hashing', () => {
   });
 
   describe('Calculate Similarity', () => {
-    const img1 = path.resolve('./utils/testimg.jpeg');
-    const img2 = path.resolve('./utils/testimg2.jpeg');
-    const img3 = path.resolve('./utils/testimg3.jpeg');
-    it('Should return a high % of similarity with 2 exact images', () => {
-      expect(CalculateSimilarity(img1, img2)).toBeGreaterThan(85);
+    const img1 = path.resolve('./utils/testimg.jpg');
+    const img2 = path.resolve('./utils/testimg2.jpg');
+    const img3 = path.resolve('./utils/testimg3.png');
+    const img4 = path.resolve('./utils/testimg4.png');
+    it('Should return a high % of similarity with 2 exact images', (done) => {
+      CalculateSimilarity(img1, img2)
+        .then((v) => {
+          expect(v).toBeGreaterThan(50);
+          done();
+        })
+        .catch((e) => done(e));
     });
-    it('Should return a low or 0 % of similarity with 2 different images', () => {
-      expect(CalculateSimilarity(img1, img3)).toBeLessThan(35);
+    it('Should return a low or 0 % of similarity with 2 different images', (done) => {
+      CalculateSimilarity(img1, img4)
+        .then((v) => {
+          expect(v).toBeLessThan(50);
+          done();
+        })
+        .catch((e) => done(e));
     });
   });
 });
