@@ -1,4 +1,9 @@
-import { HexToBin, GetImgFromFile, DeleteImageFile } from './PerceptualHashing';
+import {
+  HexToBin,
+  GetImgFromFile,
+  DeleteImageFile,
+  CalculateSimilarity
+} from './PerceptualHashing';
 import { Image } from '@canvas/image';
 import path from 'path';
 import fs from 'fs';
@@ -69,6 +74,18 @@ describe('Perceptual Hashing', () => {
     });
     it("Should fail at deleting the file when file doesn't exist", () => {
       expect(DeleteImageFile('merli')).toBeFalsy();
+    });
+  });
+
+  describe('Calculate Similarity', () => {
+    const img1 = path.resolve('./utils/testimg.jpeg');
+    const img2 = path.resolve('./utils/testimg2.jpeg');
+    const img3 = path.resolve('./utils/testimg3.jpeg');
+    it('Should return a high % of similarity with 2 exact images', () => {
+      expect(CalculateSimilarity(img1, img2)).toBeGreaterThan(85);
+    });
+    it('Should return a low or 0 % of similarity with 2 different images', () => {
+      expect(CalculateSimilarity(img1, img3)).toBeLessThan(35);
     });
   });
 });
