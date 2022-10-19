@@ -1,6 +1,7 @@
-import { HexToBin, GetImgFromFile } from './PerceptualHashing';
+import { HexToBin, GetImgFromFile, DeleteImageFile } from './PerceptualHashing';
 import { Image } from '@canvas/image';
 import path from 'path';
+import fs from 'fs';
 
 describe('Perceptual Hashing', () => {
   describe('Hex To Bin Function', () => {
@@ -54,6 +55,20 @@ describe('Perceptual Hashing', () => {
           done();
         })
         .catch((rej) => done(rej));
+    });
+  });
+
+  describe('Delete image file', () => {
+    const filePath = path.resolve('./utils/delete-test.txt');
+    fs.writeFileSync(filePath, 'TEST');
+    it('Should delete the file and return true', () => {
+      expect(DeleteImageFile(filePath)).toBeTruthy();
+    });
+    it('Should fail at deleting the file when empty file path', () => {
+      expect(DeleteImageFile('')).toBeFalsy();
+    });
+    it("Should fail at deleting the file when file doesn't exist", () => {
+      expect(DeleteImageFile('merli')).toBeFalsy();
     });
   });
 });

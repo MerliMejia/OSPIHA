@@ -13,3 +13,7 @@ export const GetImgFromFile = async (
 ): Promise<Image | undefined> => {
   return new Image();
 };
+
+export const DeleteImageFile = (path:string):boolean =>{
+    throw Error("NOT IMPLEMENTED YET")
+}
