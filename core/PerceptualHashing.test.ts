@@ -29,7 +29,7 @@ describe('Perceptual Hashing', () => {
 
   describe('Get Imgage From File', () => {
     it('Should return a valid Image object from a file', (done) => {
-      GetImgFromFile(path.resolve('./utils/testimg.jpg'))
+      GetImgFromFile(path.resolve('./utils/testimg.png'))
         .then((res) => {
           expect(res).toBeInstanceOf(Image);
           expect(res?.width).toBeGreaterThan(0);
@@ -78,22 +78,21 @@ describe('Perceptual Hashing', () => {
   });
 
   describe('Calculate Similarity', () => {
-    const img1 = path.resolve('./utils/testimg.jpg');
-    const img2 = path.resolve('./utils/testimg2.jpg');
+    const img1 = path.resolve('./utils/testimg.png');
+    const img2 = path.resolve('./utils/testimg2.png');
     const img3 = path.resolve('./utils/testimg3.png');
-    const img4 = path.resolve('./utils/testimg4.png');
-    it('Should return a high % of similarity with 2 exact images', (done) => {
+    it('Should return a similarity % higher than 90% with 2 exact islands', (done) => {
       CalculateSimilarity(img1, img2)
         .then((v) => {
-          expect(v).toBeGreaterThan(50);
+          expect(v).toBeGreaterThan(80);
           done();
         })
         .catch((e) => done(e));
     });
-    it('Should return a low or 0 % of similarity with 2 different images', (done) => {
-      CalculateSimilarity(img1, img4)
+    it('Should return a similarity % with less than 80% with 2 different islands', (done) => {
+      CalculateSimilarity(img1, img3)
         .then((v) => {
-          expect(v).toBeLessThan(50);
+          expect(v).toBeLessThan(80);
           done();
         })
         .catch((e) => done(e));

@@ -89,5 +89,6 @@ export const CalculateSimilarity = async (img1: string, img2: string) => {
     (hash2! as string)[index] === bit ? similarity++ : null;
   });
   const result = (similarity / (hash1! as string).length) * 100
+  console.log("Similarity: ", result)
   return result;
 };
