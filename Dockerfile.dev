@@ -1,7 +1,5 @@
 # Install dependencies only when needed
-FROM node:16-alpine AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+FROM node:lts AS deps
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
@@ -13,53 +11,30 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-# Add Edge repos
-RUN echo -e "\n\
-  @edgemain http://nl.alpinelinux.org/alpine/edge/main\n\
-  @edgecomm http://nl.alpinelinux.org/alpine/edge/community\n\
-  @edgetest http://nl.alpinelinux.org/alpine/edge/testing"\
-  >> /etc/apk/repositories
-
 # Install required packages
-RUN apk update && apk upgrade && apk --no-cache --force-broken-world add \
+RUN apt-get update && apt-get upgrade && apt-get -y install \
   bash \
-  build-base \
   ca-certificates \
-  clang-dev \
   clang \
   cmake \
   coreutils \
   curl \ 
-  freetype-dev \
-  ffmpeg-dev \
-  ffmpeg-libs \
   gcc \
   g++ \
   git \
   gettext \
-  lcms2-dev \
   libavc1394-dev \
   libc-dev \
   libffi-dev \
-  libjpeg-turbo-dev \
   libpng-dev \
-  libressl-dev \
-  libtbb@edgetest \
-  libtbb-dev@edgetest \
   libwebp-dev \
-  linux-headers \
   make \
   musl \
-  openblas@edgecomm \
-  openblas-dev@edgecomm \
-  openjpeg-dev \
   openssl \
   python3 \
-  py-pip \
+  python3-pip \
   python3-dev \
-  tiff-dev \
-  unzip \
-  zlib-dev
+  unzip
 
 # Python 3 as default
 RUN ln -s /usr/bin/python3 /usr/local/bin/python && \
@@ -84,7 +59,7 @@ RUN mkdir opt && cd opt && \
 
 
 # Rebuild the source code only when needed
-FROM node:16-alpine AS builder
+FROM node:lts AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -95,12 +70,13 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN yarn build
+RUN npx prisma db push
 
 # If using npm comment out above and use below instead
 # RUN npm run build
 
 # Production image, copy all the files and run next
-FROM node:16-alpine AS runner
+FROM node:lts AS runner
 WORKDIR /app
 
 ENV NODE_ENV production

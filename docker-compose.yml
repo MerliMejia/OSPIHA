@@ -24,6 +24,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     restart: unless-stopped
   api:
+    depends_on:
+      - db
     environment:
       - NODE_ENV=development
     build:
@@ -36,7 +38,7 @@ services:
       - '3000'
     ports:
       - '3000:3000'
-    command: npm run dev
+    command: bash -c "npx prisma db push && npm run dev"
 volumes:
   db:
     driver: local
