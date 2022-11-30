@@ -19,7 +19,7 @@ export default async function post(
   res: NextApiResponse<IResponse>
 ) {
   //Getting file path
-  const filePath = await GetFilePathFromClientUpload(req);
+  const filePath: string = (await GetFilePathFromClientUpload(req)) as string;
 
   //Converting image to lines only.
   await MakeCannyEdgeDetection(filePath);
