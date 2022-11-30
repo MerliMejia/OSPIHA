@@ -48,6 +48,13 @@ Base URL: `/api`
 type: form-data
 key: images
 value: file
+
+response: 
+{
+    "data": {
+        "hash": string
+    }
+}
 ```
 
 #### /getSimilarity
@@ -56,4 +63,11 @@ value: file
 type: form-data
 key: images
 value: file[]
+
+response: 
+{
+    "data": {
+        "similarity": number
+    }
+}
 ```
