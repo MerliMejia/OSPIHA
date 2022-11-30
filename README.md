@@ -38,3 +38,22 @@ Run tests:
 ```
 docker-compose run --rm api npm run test
 ```
+### Endpoints:
+
+Base URL: `/api`
+
+#### /hash
+##### body:
+```
+type: form-data
+key: images
+value: file
+```
+
+#### /getSimilarity
+##### body:
+```
+type: form-data
+key: images
+value: file[]
+```
