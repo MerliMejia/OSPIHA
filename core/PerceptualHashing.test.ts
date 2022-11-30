@@ -29,7 +29,7 @@ describe('Perceptual Hashing', () => {
 
   describe('Get Imgage From File', () => {
     it('Should return a valid Image object from a file', (done) => {
-      GetImgFromFile(path.resolve('./utils/testimg.png'))
+      GetImgFromFile(path.resolve('./test-files/testimg.png'))
         .then((res) => {
           expect(res).toBeInstanceOf(Image);
           expect(res?.width).toBeGreaterThan(0);
@@ -46,7 +46,7 @@ describe('Perceptual Hashing', () => {
         .catch((rej) => done(rej));
     });
     it("Should fail if file doesn't exist", (done) => {
-      GetImgFromFile(path.resolve('./utils/testimg-not.jpeg'))
+      GetImgFromFile(path.resolve('./test-files/testimg-not.jpeg'))
         .then((res) => {
           expect(res).toBeUndefined();
           done();
@@ -54,7 +54,7 @@ describe('Perceptual Hashing', () => {
         .catch((rej) => done(rej));
     });
     it('Should fail if file is not an image', (done) => {
-      GetImgFromFile(path.resolve('./utils/test.txt'))
+      GetImgFromFile(path.resolve('./test-files/test.txt'))
         .then((res) => {
           expect(res).toBeUndefined();
           done();
@@ -64,7 +64,7 @@ describe('Perceptual Hashing', () => {
   });
 
   describe('Delete image file', () => {
-    const filePath = path.resolve('./utils/delete-test.txt');
+    const filePath = path.resolve('./test-files/delete-test.txt');
     fs.writeFileSync(filePath, 'TEST');
     it('Should delete the file and return true', () => {
       expect(DeleteImageFile(filePath)).toBeTruthy();
@@ -78,9 +78,9 @@ describe('Perceptual Hashing', () => {
   });
 
   describe('Calculate Similarity', () => {
-    const img1 = path.resolve('./utils/testimg.png');
-    const img2 = path.resolve('./utils/testimg2.png');
-    const img3 = path.resolve('./utils/testimg3.png');
+    const img1 = path.resolve('./test-files/testimg.png');
+    const img2 = path.resolve('./test-files/testimg2.png');
+    const img3 = path.resolve('./test-files/testimg3.png');
     it('Should return a similarity % higher than 90% with 2 exact islands', (done) => {
       CalculateSimilarity(img1, img2)
         .then((v) => {
