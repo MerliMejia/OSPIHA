@@ -1,5 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { CalculateSimilarity } from '../../core/PerceptualHashing';
+import {
+  CalculateSimilarity,
+  DeleteImageFile
+} from '../../core/PerceptualHashing';
 import {
   GetFilePathFromClientUpload,
   MakeCannyEdgeDetection
@@ -31,6 +34,10 @@ export default async function post(
 
   //Calculate similarity based on Hamming Distance.
   const similarity = await CalculateSimilarity(filePaths[0], filePaths[1]);
+
+  filePaths.forEach((filePath) => {
+    DeleteImageFile(filePath);
+  });
 
   res.send({ data: { similarity } });
 }
